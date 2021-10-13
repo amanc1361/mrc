@@ -12,7 +12,14 @@ const Home: NextPage = () => {
   const[categoryvalue,setCategoryvalue]=useState(1);
   const[favirotes,setFavirotes]=useState([""])
   const[anjomans,setAnjomans]=useState([""]);
-
+  const[name,setname]=useState("")
+  const[family,setFamily]=useState("")
+  const[fathername,setFathername]=useState("")
+  const[nationalcode,setNationlacode]=useState("")
+  const[schoolname,setSchoolname]=useState("")
+  const[mobilenumber,setMobilenumber]=useState("")
+  const[shadnumber,setShadnumber]=useState("")
+  
   
   const chageFavirotes=(age:number)=> {
     if (age<=4) {
@@ -107,30 +114,41 @@ const Home: NextPage = () => {
           <form className="needs-validation" noValidate>
             <div className="row g-3">
               <div className="col-sm-4">
-                <label htmlFor="firstName" className="form-label">نام</label>
-                <input type="text" className="form-control" id="firstName" placeholder="" value="" required/>
+                <label htmlFor="name" className="form-label">نام</label>
+                <input type="text" className="form-control" id="name"  placeholder="" value={name} required
+                
+                onChange={e=>setname(e.target.value)}
+                />
                 <div className="invalid-feedback">
                نام خود را به صورت صحیح وارد نمایید
                 </div>
               </div>
   
               <div className="col-sm-4">
-                <label htmlFor="lastName" className="form-label">نام خانوادگی</label>
-                <input type="text" className="form-control" id="lastName" placeholder="" value="" required/>
+                <label htmlFor="family" className="form-label">نام خانوادگی</label>
+                <input type="text" className="form-control" id="family" placeholder="" value={family} required
+                  onChange={e=>setFamily(e.target.value)}
+                />
                 <div className="invalid-feedback">
                 نام خانوادگی خود را وارد نمایید
                 </div>
               </div>
                 <div className="col-sm-4">
-                <label htmlFor="lastName" className="form-label">نام پدر</label>
-                <input type="text" className="form-control" id="fathername" placeholder="" value="" required/>
+                <label htmlFor="fathername" className="form-label">نام پدر</label>
+                <input type="text" className="form-control" id="fathername" placeholder="" value={fathername} 
+                
+                required
+                 onChange={e=>setFathername(e.target.value)}
+                />
                 <div className="invalid-feedback">
                 نام پدر خود را وارد نمایید
                 </div>
               </div>
               <div className="col-sm-4">
-                <label htmlFor="lastName" className="form-label">کد ملی </label>
-                <input type="text" className="form-control" id="fathername" placeholder="" value="" required/>
+                <label htmlFor="nationalcode" className="form-label">کد ملی </label>
+                <input type="number" className="form-control" id="nationalcode" placeholder="" value={nationalcode} required
+                 onChange={e=>setNationlacode(e.target.value)}
+                />
                 <div className="invalid-feedback">
                 کد ملی خود را به صورت صحیح وارد نمایید
                 </div>
@@ -159,28 +177,35 @@ const Home: NextPage = () => {
                 
                 </select>
                 <div className="invalid-feedback">
-            پایه تحصیلی خود را وارد نمایید
+            رشته تحصیلی خود را وارد نمایید
                 </div>
               </div>
               <div className="col-sm-4">
-                <label htmlFor="lastName" className="form-label"> آموزشگاه محل تحصیل</label>
-                <input type="text" className="form-control" id="fathername" placeholder="" value="" required/>
+                <label htmlFor="schoolname" className="form-label"> آموزشگاه محل تحصیل</label>
+                <input type="text" className="form-control" id="schoolname" placeholder="" value={schoolname} required
+                  onChange={e=>setSchoolname(e.target.value)}
+                />
                 <div className="invalid-feedback">
-                نام پدر خود را وارد نمایید
+             نام آموزشگاه محل تحصیل خود را وارد نمایید
                 </div>
               </div>
               <div className="col-sm-4">
-                <label htmlFor="lastName" className="form-label"> شماره تماس</label>
-                <input type="text" className="form-control" id="fathername" placeholder="" value="" required/>
+                <label htmlFor="mobilenumber" className="form-label"> شماره تماس</label>
+                <input type="number" className="form-control" id="mobilenumber" placeholder="" value={mobilenumber} required
+                  onChange={e=>setMobilenumber(e.target.value)}
+                />
                 <div className="invalid-feedback">
-                نام پدر خود را وارد نمایید
+                شماره تماس خود را وارد نمایید
                 </div>
               </div>
               <div className="col-sm-4">
-                <label htmlFor="lastName" className="form-label"> شماره شاد</label>
-                <input type="text" className="form-control" id="fathername" placeholder="" value="" required/>
+                <label htmlFor="shadnumber" className="form-label"> شماره شاد</label>
+                <input type="number" className="form-control" id="shadnumber" placeholder="" value={shadnumber} required
+                
+                  onChange={e=>setShadnumber(e.target.value)}
+                />
                 <div className="invalid-feedback">
-                نام پدر خود را وارد نمایید
+                شماره شاد خود را وارد نمایید
                 </div>
               </div>
   
