@@ -71,17 +71,17 @@ const Home: NextPage = () => {
     
   }
 
-  useEffect(()=>{
+  // useEffect(()=>{
   
-    chageFavirotes(categoryvalue);
-  if (categoryvalue<=6) {
-    setGrades(["اول ابتدایی"]);
-  }else if (categoryvalue>6 && categoryvalue<=9) {
-    setGrades(["متوسطه اول"]);
-  }else {
-    setGrades(["ریاضی","علوم انسانی","تجربی","فنی وحرفه ای","کارودانش"]);
-  }
-  },[]);
+  //   chageFavirotes(categoryvalue);
+  // if (categoryvalue<=6) {
+  //   setGrades(["اول ابتدایی"]);
+  // }else if (categoryvalue>6 && categoryvalue<=9) {
+  //   setGrades(["متوسطه اول"]);
+  // }else {
+  //   setGrades(["ریاضی","علوم انسانی","تجربی","فنی وحرفه ای","کارودانش"]);
+  // }
+  // },[1]);
   
   return (
    <html
@@ -136,12 +136,12 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div className="col-md-4">
-                <label htmlFor="country" className="form-label">پایه تحصیلی</label>
-                <select className="form-select" id="country" required onChange={(e)=>changevalue(Number(e.target.value))
+                <label htmlFor="edubase" className="form-label">پایه تحصیلی</label>
+                <select className="form-select" id="edubase" key="edubase" required onChange={(e)=>changevalue(Number(e.target.value))
                 }
                 
                 >
-                  {categories.map((element)=><option value={element.value}>{element.title}</option>)}
+                  {categories.map((element)=><option key={element.value} value={element.value}>{element.title}</option>) }
                   
                  
                 </select>
@@ -150,10 +150,10 @@ const Home: NextPage = () => {
                 </div>
               </div>
               <div className="col-md-4">
-                <label htmlFor="country" className="form-label">رشته تحصیلی</label>
-                <select className="form-select" id="country" required>
+                <label htmlFor="gradebase" className="form-label">رشته تحصیلی</label>
+                <select className="form-select" id="gradebase" required>
                    {
-                     grades.map((element)=><option>{element}</option>)
+                     grades.map((element)=><option key="key1" >{element}</option>)
                    }
                   
                 
@@ -198,7 +198,7 @@ const Home: NextPage = () => {
             <hr className="my-4"/>
             <h4 className="mb-3"> علاقه مندی ها</h4>
              {
-               favirotes.map(favirote=><div className="form-check form-check-inline">
+               favirotes.map(favirote=><div className="form-check form-check-inline" key="key2">
                <input type="checkbox" className="form-check-input" id="same-address"/>
                <label className="form-check-label" htmlFor="same-address">{favirote} </label>
              </div>)
@@ -217,7 +217,7 @@ const Home: NextPage = () => {
               <hr className="my-4"/>
                <h4 className="mb-3">انجمن ها</h4>
                {
-               anjomans.map(anjoman=><div className="form-check form-check-inline">
+               anjomans.map(anjoman=><div className="form-check form-check-inline" key="key3">
                <input type="checkbox" className="form-check-input" id="same-address"/>
                <label className="form-check-label" htmlFor="same-address">{anjoman} </label>
              </div>)
