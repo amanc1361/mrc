@@ -1,8 +1,9 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import Axios from 'axios'
 
 import { useEffect, useState } from 'react'
-
+Axios.defaults.baseURL = "http://localhost:6555/api";
 const Home: NextPage = () => {
   const[options,setoptions]=useState(["داستان نویسی","نقاشی","علوم","ریاضی","کتابخوانی","نجوم"]);
   const[categories,setcategories]=useState([{"title":"اول","value":1},{"title":"دوم","value":2},{"title":"سوم","value":3},{"title":"چهارم","value":4},{"title":"پنجم","value":5},{"title":"ششم","value":6},
@@ -42,6 +43,36 @@ const Home: NextPage = () => {
         "کتابخوانی"
       ])
     }
+
+  }
+
+  const saveform= async() =>  {
+
+    var formdata =new FormData()
+     try {
+    formdata.append("name",name)
+    formdata.append("family",family)
+    formdata.append("father_name",fathername)
+    formdata.append("national_caode",nationalcode)
+    formdata.append("phone",mobilenumber)
+    const res = await Axios.post("/user", formdata);
+    
+      if (res.data) {
+        console.log(res);
+        toast({
+          title: "Image Uploaded",
+          description: "با موفقیت ثبت شد",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+        });
+      } 
+    }catch (error) {
+        console.log(console.error());
+    }
+        
+      
+      
 
   }
 
@@ -91,10 +122,8 @@ const Home: NextPage = () => {
   // },[1]);
   
   return (
-   <html
-   dir="rtl"
-   lang="fr"
-   >
+    <div>
+   
   
      <Head>
     
@@ -108,10 +137,51 @@ const Home: NextPage = () => {
       </div>
   
       <div className="row g-3">
-        
+      <div className="col-md-5 col-lg-4 order-md-last">
+        <h4 className="d-flex justify-content-between align-items-center mb-3">
+          <span className="text-muted">مدارک مورد نیاز </span>
+          <span className="badge bg-secondary rounded-pill">3</span>
+        </h4>
+         <div className="row g-3">
+        <div className="col-sm-10">
+                 <label htmlFor="personimage" className="form-label">عکس پرسنلی</label>
+                <input type="file" className="form-control" accept="image/*" id="image1" name="personimage"  placeholder=""  required
+                
+                
+                />
+                 <div className="invalid-feedback">
+                  عکس پرسنلی را مشخص کنید
+                </div>
+              </div>
+             
+              
+              <div className="col-sm-10">
+                 <label htmlFor="shenasnamehimage" className="form-label">صفحه اول شناسنامه </label>
+                <input type="file" className="form-control" accept="image/*" id="image2" name="shenasnamehimage"  placeholder=""  required
+                
+                
+                />
+               <div className="invalid-feedback">
+            عکس شناسنامه را وارد کنید
+                </div>
+              </div>
+              
+              
+              <div className="col-sm-10">
+                 <label htmlFor="certimage" className="form-label"> گواهی اشتغال به تحصیل</label>
+                <input type="file" className="form-control" accept="image/*" id="image3" name="certimage"  placeholder=""  required
+                
+                
+                />
+               <div className="invalid-feedback">
+               گواهی اشتغال به تحصیل را وارد نمایید
+                </div>
+              </div>
+              </div>
+        </div>
         <div className="col-md-7 col-lg-8">
           <h4 className="mb-3">مشخصات فردی دانش آموز</h4>
-          <form className="needs-validation" noValidate>
+          {/* <form className="needs-validation"  noValidate> */}
             <div className="row g-3">
               <div className="col-sm-4">
                 <label htmlFor="name" className="form-label">نام</label>
@@ -126,7 +196,7 @@ const Home: NextPage = () => {
   
               <div className="col-sm-4">
                 <label htmlFor="family" className="form-label">نام خانوادگی</label>
-                <input type="text" className="form-control" id="family" placeholder="" value={family} required
+                <input type="text" className="form-control"  id="family" placeholder="" value={family} required
                   onChange={e=>setFamily(e.target.value)}
                 />
                 <div className="invalid-feedback">
@@ -256,14 +326,19 @@ const Home: NextPage = () => {
   
             <hr className="my-4"/>
   
-            <button className="w-100 btn btn-primary btn-lg" type="submit"> ثبت نام</button>
-          </form>
+            <button className="w-100 btn btn-primary btn-lg" id="btnsave" onClick={saveform} > ثبت نام</button>
+          {/* </form> */}
         </div>
       </div>
       
     </main>
     </div>
-    </html>
+    
+    </div>
   )
 }
 export default Home
+function toast(arg0: { title: string; description: any; status: string; duration: number; isClosable: boolean; }) {
+  throw new Error('Function not implemented.');
+}
+
