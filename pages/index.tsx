@@ -6,7 +6,7 @@ import Axios from 'axios'
 
 import { useEffect, useState } from 'react'
 import { loadDefaultErrorComponents } from 'next/dist/server/load-components';
-Axios.defaults.baseURL = "http://localhost:6555/api";
+Axios.defaults.baseURL = "https://mdhrc.ir:6555/api";
 const Home: NextPage = () => {
 class Errors {
     name:boolean=false
@@ -83,6 +83,7 @@ class Errors {
   const [certimage, setCertimage] = useState('');
   const[issuccess,setissuccess]=useState(false)
   const[iserror,setiserror]=useState(false)
+  const[errmessage,seterrmessage]=useState('')
 
   const handleChangeImage = (event:any) => {
    
@@ -96,6 +97,7 @@ class Errors {
        errors.shensname=false
        break
       case  "certimage":
+        console.log(event.target.files[0])
         setCertimage(event.target.files[0]) 
         break
     }
@@ -212,14 +214,27 @@ class Errors {
         iserr=true
       }
 
-      if (listanjoman.length<=1) {
+      if (listanjoman.length<=1 && grades.length>2) {
          errors.anjoman=true
          iserr=true
       }
     seterrors(errors)
     setGradeCategory(1)
+    console.log(iserr)
     return iserr
 
+  }
+  const cleardata=() => {
+    setname('')
+    setFamily('')
+    setFathername('')
+    setNationlacode('')
+    setSchoolname('')
+    setMobilenumber('')
+    setShadnumber('')
+    setPersonimage('')
+    setShenasnameimage('')
+    setCertimage('')
   }
   const addfavirote= (fav:string )=>
    {
@@ -251,6 +266,7 @@ class Errors {
     
   }
   const saveform= async() =>  {
+   
     var fvstring:string=''
     var anjomanstring:string=''
   
@@ -259,16 +275,17 @@ class Errors {
       return 
     } 
     
+  
     for (let item of favirotes) {
-       fvstring+=item.title
+       fvstring+=item.title+","
     }
     for (let item of anjomans) {
-      anjomanstring+=item.title
+      anjomanstring+=item.title+","
     }
     var formdata =new FormData()
    
-    try 
-    {
+    // try 
+    // {
      
      formdata.append("name",name)
      formdata.append("family",family)
@@ -288,25 +305,51 @@ class Errors {
      
      formdata.append("favirotes",fvstring)
      formdata.append("anjomans",anjomanstring)
-   
+           
+      await Axios.post("/user", formdata).then(res => {
+        setissuccess(true)
+        cleardata()
+        setTimeout(() => {
+          setissuccess(false)
+        }, 5000);
+
+     }).catch(err=> {
+        console.log(err.response)
+        setiserror(true)
+        seterrmessage(err.response.data.message)
+        setTimeout(() => {
+          setiserror(false)
+        }, 5000);
+
+
+     })
+    //  console.log(res)
+    //  if (res.status==200) {
+    //       console.log(res);
+    //       setissuccess(true)
+    //       setTimeout(() => {
+    //          setissuccess(false)
+    //       }, 5000);
+    //   } 
+    //   else {
+    //     console.log(res)
+    //   }
+    // }catch (err:any) 
+    // {
+    //   const { response } = err;
+    //   console.log(err)
+    //   console.log(response.data.errors)
+    //   seterrmessage(err.toString())
+    //     setiserror(true)
+    //     setTimeout(() => {
+    //       setiserror(false)
+    //    }, 5000);
+    // }
     
-     const res = await Axios.post("/user", formdata);
-   
-     if (res.data) {
-          console.log(res);
-          toast({
-          title: "Image Uploaded",
-          description: "با موفقیت ثبت شد",
-          status: "success",
-          duration: 4000,
-          isClosable: true,
-        });
-      } 
-    }catch (error) 
-    {
-        console.log(console.error());
+  
+        
+      
     }
-        }
 
   const chageanjoman=(value:number) =>{
  
@@ -372,7 +415,7 @@ class Errors {
      اطلاعات شما با موفقیت ثبت شد.
 </div> :<div></div>}
 {iserror?<div className="alert alert-danger" role="alert">
-  A simple danger alert—check it out!
+  {errmessage}
 </div>:<div></div>}
 
 
@@ -408,6 +451,7 @@ class Errors {
                  <div className="col-sm-10">
                  <label htmlFor="certimage" className="form-label"> گواهی اشتغال به تحصیل</label>
                 <input type="file" className="form-control" accept="image/*" id="image3" name="certimage"  placeholder=""  required
+                 onChange={handleChangeImage }
                                />
                <div className="invalid-feedback">
                گواهی اشتغال به تحصیل را وارد نمایید
@@ -544,6 +588,10 @@ class Errors {
                  </div>:<div></div>}
             <hr className="my-4"/>
      <button className="w-100 btn btn-primary btn-lg" id="btnsave" onClick={saveform} > ثبت نام</button>
+        <div>
+
+          <br></br>
+        </div>
           {/* </form> */}
         </div>
       </div>
