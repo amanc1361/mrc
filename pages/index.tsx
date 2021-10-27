@@ -6,7 +6,7 @@ import Axios from 'axios'
 
 import { useEffect, useState } from 'react'
 import { loadDefaultErrorComponents } from 'next/dist/server/load-components';
-Axios.defaults.baseURL = "https://mdhrc.ir:6555/api";
+Axios.defaults.baseURL = "https://www.mdhrc.ir:6555/api";
 const Home: NextPage = () => {
 class Errors {
     name:boolean=false
