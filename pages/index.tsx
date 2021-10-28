@@ -214,9 +214,14 @@ class Errors {
         iserr=true
       }
 
-      if (listanjoman.length<=1 && grades.length>2) {
+      console.log(grades.length)
+      console.log(listanjoman.length)
+
+      if ( grades.length>2) {
+          if (listanjoman.length<=1 ) {
          errors.anjoman=true
          iserr=true
+          }
       }
     seterrors(errors)
     setGradeCategory(1)
@@ -260,7 +265,7 @@ class Errors {
     var anjomanstring:string=''
    index= listanjoman.indexOf(fav)
    if (index==-1) {
-     listfavirotes.push(fav)
+     listanjoman.push(fav)
    }else
       listanjoman.splice(index,1)
     
