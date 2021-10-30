@@ -304,8 +304,9 @@ class Errors {
      if (certimage!=null)
      formdata.append("certiamge",certimage)
      formdata.append("base",defaultbase)
+ 
      formdata.append("category",defaultgrade)
-     formdata.append("shoolname",schoolname)
+     formdata.append("schoolname",schoolname)
      formdata.append("shad",shadnumber.toString())
      
      formdata.append("favirotes",fvstring)
