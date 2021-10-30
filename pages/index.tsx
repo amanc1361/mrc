@@ -60,6 +60,7 @@ class Errors {
   const[listanjoman,setListanjomans]=useState([""])
   const[defaultgrade,setDefaultGrade]=useState("ابتدایی")
   const[defaultbase,setDefaultBase]=useState("اول")
+  const[isloading,setIsloading]=useState(false)
   const[errors,seterrors]=useState<Errors>(new Errors())
   const[favirotes,setFavirotes]=useState( [
     {"title":"نقاشی","value":1},
@@ -168,7 +169,7 @@ class Errors {
    var iserr:Boolean=false
    errors.clear()
    seterrors(errors)
-    
+   console.log(defaultgrade)
     if (name.length==0) {
        errors.name=true
        iserr=true
@@ -271,6 +272,9 @@ class Errors {
     
   }
   const saveform= async() =>  {
+    if (isloading) {
+      return
+    }
    
     var fvstring:string=''
     var anjomanstring:string=''
@@ -304,23 +308,26 @@ class Errors {
      if (certimage!=null)
      formdata.append("certiamge",certimage)
      formdata.append("base",defaultbase)
- 
+     
      formdata.append("category",defaultgrade)
+     console.log(defaultgrade)
      formdata.append("schoolname",schoolname)
      formdata.append("shad",shadnumber.toString())
      
      formdata.append("favirotes",fvstring)
      formdata.append("anjomans",anjomanstring)
-           
+           setIsloading(true)
       await Axios.post("/user", formdata).then(res => {
         setissuccess(true)
         cleardata()
+        setIsloading(false)
         setTimeout(() => {
           setissuccess(false)
         }, 5000);
 
      }).catch(err=> {
         console.log(err.response)
+        setIsloading(false)
         setiserror(true)
         seterrmessage(err.response.data.message)
         setTimeout(() => {
@@ -593,8 +600,14 @@ class Errors {
              }
                  </div>:<div></div>}
             <hr className="my-4"/>
-     <button className="w-100 btn btn-primary btn-lg" id="btnsave" onClick={saveform} > ثبت نام</button>
-        <div>
+     <button className="w-100 btn btn-primary btn-lg" id="btnsave" onClick={saveform} > ثبت نام
+     
+       <span className={` spinner-border-sm ${isloading?'spinner-border' :''}  `} role="status" aria-hidden="true"></span>
+   
+        </button>
+    
+        <div> 
+       
 
           <br></br>
         </div>
