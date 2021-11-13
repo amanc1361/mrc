@@ -431,7 +431,7 @@ class Errors {
       {"title":" علوم انسانی","value":5},{"title":" فنی و حرفه ای","value":6},
       {"title":" کارودانش","value":7}
     ]);
-    }1
+    }
       }
 
   return (
