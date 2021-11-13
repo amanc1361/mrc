@@ -66,9 +66,8 @@ class Errors {
     {"title":"نقاشی","value":1},
     {"title":"ریاضی","value":2},
     {"title":"علوم","value":3},
-    {"title":"نقاشی","value":4},
-    {"title":"کتابخوانی","value":5},
-    {"title":"داستان نویسی","value":6},
+    {"title":"کتابخوانی","value":4},
+    {"title":"داستان نویسی","value":5},
 
   ])
   const[anjomans,setAnjomans]=useState([{"title":"","value":0}]);
@@ -81,6 +80,7 @@ class Errors {
   const[shadnumber,setShadnumber]=useState("")
   const [personimage, setPersonimage] = useState('');
   const [shenasnamehimage, setShenasnameimage] = useState('');
+  const [fishimage, setFishimage] = useState('');
   const [certimage, setCertimage] = useState('');
   const[issuccess,setissuccess]=useState(false)
   const[iserror,setiserror]=useState(false)
@@ -98,8 +98,11 @@ class Errors {
        errors.shensname=false
        break
       case  "certimage":
-        console.log(event.target.files[0])
-        setCertimage(event.target.files[0]) 
+       
+        setCertimage(event.target.files[0])
+      case "fish":
+        setFishimage(event.target.files[0])
+           
         break
     }
   
@@ -242,21 +245,28 @@ class Errors {
     setShenasnameimage('')
     setCertimage('')
   }
-  const addfavirote= (fav:string )=>
+  const addfavirote= (fav:string,checked:boolean )=>
    {
      errors.favirote=false
+     
      seterrors(errors)
      setGradeCategory(7)
     var index 
-   index= listfavirotes.indexOf(fav)
-   if (index==-1) {
-     listfavirotes.push(fav)
-   }else
+   if (checked)
+   listfavirotes.push(fav)
+   else
+    {
+      index= listfavirotes.indexOf(fav)
+      if (index>-1)
       listfavirotes.splice(index,1)
+    }
+    
+  
+      
       
   }
   
-  const addanjomans= (fav:string )=>
+  const addanjomans= (fav:string,cheked:boolean )=>
    {
      errors.anjoman=false
      seterrors(errors)
@@ -264,11 +274,18 @@ class Errors {
     var index 
     
     var anjomanstring:string=''
-   index= listanjoman.indexOf(fav)
-   if (index==-1) {
-     listanjoman.push(fav)
-   }else
-      listanjoman.splice(index,1)
+
+    if(cheked) 
+    listanjoman.push(fav)
+    else 
+    {
+      index= listanjoman.indexOf(fav)
+      if (index>-1) {
+        listanjoman.splice(index,1)
+      }
+    }
+  
+      
     
   }
   const saveform= async() =>  {
@@ -307,6 +324,7 @@ class Errors {
      formdata.append("shenasnamehimage",shenasnamehimage)
      if (certimage!=null)
      formdata.append("certiamge",certimage)
+     formdata.append("fish",fishimage)
      formdata.append("base",defaultbase)
      
      formdata.append("category",defaultgrade)
@@ -437,42 +455,8 @@ class Errors {
         <h6 className="lead">فرم ثبت نام دانش آموزان</h6>
       </div>
         <div className="row g-3">
-      <div className="col-md-5 col-lg-4 order-md-last">
-        <h4 className="d-flex justify-content-between align-items-center mb-3">
-          <span className="text-muted">مدارک مورد نیاز </span>
-          <span className="badge bg-secondary rounded-pill">3</span>
-        </h4>
-         <div className="row g-3">
-        <div className="col-sm-10">
-                 <label htmlFor="personimage" className="form-label">عکس پرسنلی</label>
-                <input type="file" className={`form-control ${errors?.personimage ? 'is-invalid' : ''}`} accept="image/*" id="image1" name="personimage"  placeholder=""  required
-                   onChange={handleChangeImage }
-                />
-                 <div className="invalid-feedback">
-                      عکس پرسنلی را مشخص کنید
-                 </div>
-              </div>
-               <div className="col-sm-10">
-                 <label htmlFor="shenasnamehimage" className="form-label">صفحه اول شناسنامه </label>
-                 <input type="file" className={`form-control ${errors?.shensname ? 'is-invalid' : ''}`} accept="image/*" id="image2" name="shenasnamehimage"  placeholder=""  required
-                   onChange={handleChangeImage }
-             />
-               <div className="invalid-feedback">
-                        عکس شناسنامه را وارد کنید
-                </div>
-              </div>
-                 <div className="col-sm-10">
-                 <label htmlFor="certimage" className="form-label"> گواهی اشتغال به تحصیل</label>
-                <input type="file" className="form-control" accept="image/*" id="image3" name="certimage"  placeholder=""  required
-                 onChange={handleChangeImage }
-                               />
-               <div className="invalid-feedback">
-               گواهی اشتغال به تحصیل را وارد نمایید
-                </div>
-              </div>
-              </div>
-        </div>
-        <div className="col-md-7 col-lg-8">
+      
+        <div className="col-md-7 col-lg-10">
           <h4 className="mb-3">مشخصات فردی دانش آموز</h4>
           {/* <form className="needs-validation"  noValidate> */}
             <div className="row g-3">
@@ -573,12 +557,18 @@ class Errors {
                </div>
             </div>
               <hr className="my-4"/>
-            <h4 className="mb-3"> علاقه مندی ها</h4>
+            <h4 className="mb-3"> علاقه مندی ها <span className="lead" >(حداقل 1 مورد حداکثر 3 مورد)</span></h4>
              {
                 favirotes.map(favirote=><div className="form-check form-check-inline" key={"favirote"+favirote.value}>
                <input type="checkbox" className={`form-check-input ${errors?.favirote ? 'is-invalid' : ''}`} id="same-address"
                
-               onChange={e=>addfavirote(favirote.title)}
+               onChange={e=>{
+                 if (listfavirotes.length>3) {
+                  e.target.checked=false 
+                 }
+                 addfavirote(favirote.title,e.target.checked)
+                
+                } }
                />
                <label className="form-check-label" htmlFor="same-address">{favirote.title} </label>
              </div>)
@@ -593,13 +583,65 @@ class Errors {
                anjomans.map(anjoman=><div className="form-check form-check-inline" key={"anjaoma"+anjoman.value}>
                <input type="checkbox" className={`form-check-input ${errors?.anjoman ? 'is-invalid' : ''}`} id="same-address"
                
-               onChange={e=>addanjomans(anjoman.title)}
+               onChange={e=>addanjomans(anjoman.title,e.target.checked)}
                />
                <label className="form-check-label" htmlFor="same-address">{anjoman.title} </label>
              </div>)
              }
                  </div>:<div></div>}
             <hr className="my-4"/>
+            <h4 className="d-flex justify-content-between align-items-center mb-3">
+          <span className="text-muted">مدارک مورد نیاز </span>
+          <span className="badge bg-secondary rounded-pill">4</span>
+        </h4>
+            <div className="row g-3">
+        <div className="col-sm-10">
+                 <label htmlFor="personimage" className="form-label">عکس پرسنلی</label>
+                <input type="file" className={`form-control ${errors?.personimage ? 'is-invalid' : ''}`} accept="image/*" id="image1" name="personimage"  placeholder=""  required
+                   onChange={handleChangeImage }
+                />
+                 <div className="invalid-feedback">
+                      عکس پرسنلی را مشخص کنید
+                 </div>
+              </div>
+               <div className="col-sm-10">
+                 <label htmlFor="shenasnamehimage" className="form-label">صفحه اول شناسنامه </label>
+                 <input type="file" className={`form-control ${errors?.shensname ? 'is-invalid' : ''}`} accept="image/*" id="image2" name="shenasnamehimage"  placeholder=""  required
+                   onChange={handleChangeImage }
+             />
+               <div className="invalid-feedback">
+                        عکس شناسنامه را وارد کنید
+                </div>
+              </div>
+                 <div className="col-sm-10">
+                 <label htmlFor="certimage" className="form-label"> گواهی اشتغال به تحصیل</label>
+                <input type="file" className="form-control" accept="image/*" id="image3" name="certimage"  placeholder=""  required
+                 onChange={handleChangeImage }
+                               />
+               <div className="invalid-feedback">
+               گواهی اشتغال به تحصیل را وارد نمایید
+                </div>
+              </div>
+              <div className="col-sm-10">
+                 <label htmlFor="fish" className="form-label">   تصویر فیش واریزی </label>
+                <input type="file" className="form-control" accept="image/*" id="image4" name="fish"  placeholder=""  required
+                 onChange={handleChangeImage }
+                               />
+               <div className="invalid-feedback">
+               تصویر فیش واریزی را وارد نمایید
+                </div>
+              </div>
+              <div className="col-sm-10">
+                 
+<label htmlFor="fish" className="form-label text-info font-weight-bold" >   توجه مبلغ حق عضویت براساس مصوبه هیئت امنای پژوهشسرای دکتر حسابی برای سال تحصیلی 1401-1400 برابر نودهزارتومان می باشد. چنانکه دانش آموزی بضاعت مالی دارد از پرداخت حق عضویت معاف می باشد.
+</label>
+<label htmlFor="fish" className="form-label">    شماره کارت پژوهش سرای دانش آموزی دکتر حســابی مهاباد
+</label>
+<label htmlFor="fish" className="form-label text-success font-weight-bold" >    6037-9975-9939-2827
+</label>
+                 </div>
+              </div>
+              <br></br>
      <button className="w-100 btn btn-primary btn-lg" id="btnsave" onClick={saveform} > ثبت نام
      
        <span className={` spinner-border-sm ${isloading?'spinner-border' :''}  `} role="status" aria-hidden="true"></span>
