@@ -1,11 +1,15 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Axios from 'axios'
+import Axios from 'axios' 
+
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+// plugins styles from node_modules
 
 
 
-import { useEffect, useState } from 'react'
-import { loadDefaultErrorComponents } from 'next/dist/server/load-components';
+import {  useState } from 'react'
+
 Axios.defaults.baseURL = "https://www.mdhrc.ir/api";
 const Home: NextPage = () => {
 class Errors {
@@ -70,6 +74,7 @@ class Errors {
     {"title":"داستان نویسی","value":5},
 
   ])
+ 
   const[anjomans,setAnjomans]=useState([{"title":"","value":0}]);
   const[name,setname]=useState("")
   const[family,setFamily]=useState("")
@@ -168,7 +173,10 @@ class Errors {
     }
 
   }
+
+  toast.configure()
   const validate=()=> {
+  
    var iserr:Boolean=false
    errors.clear()
    seterrors(errors)
@@ -288,7 +296,9 @@ class Errors {
       
     
   }
+ 
   const saveform= async() =>  {
+   
     if (isloading) {
       return
     }
@@ -302,11 +312,12 @@ class Errors {
     } 
     
   
-    for (let item of favirotes) {
-       fvstring+=item.title+","
+    for (let item of listfavirotes) {
+       fvstring+=item+","
+       
     }
-    for (let item of anjomans) {
-      anjomanstring+=item.title+","
+    for (let item of listanjoman) {
+      anjomanstring+=item+","
     }
     var formdata =new FormData()
    
@@ -336,21 +347,20 @@ class Errors {
      formdata.append("anjomans",anjomanstring)
            setIsloading(true)
       await Axios.post("/user", formdata).then(res => {
-        setissuccess(true)
+       
         cleardata()
         setIsloading(false)
-        setTimeout(() => {
-          setissuccess(false)
-        }, 5000);
+        toast.success("اطلاعات شما با موفقیت ثبت شد", {
+          position: toast.POSITION.TOP_CENTER
+        })
 
      }).catch(err=> {
         console.log(err.response)
         setIsloading(false)
-        setiserror(true)
-        seterrmessage(err.response.data.message)
-        setTimeout(() => {
-          setiserror(false)
-        }, 5000);
+      
+        toast.error(err.response.data.message, {
+          position: toast.POSITION.TOP_CENTER
+        })
 
 
      })
@@ -441,16 +451,7 @@ class Errors {
      </Head>
     <div className="container">
     <main>
-      {issuccess?
-    <div className="alert alert-success" role="alert">
-     اطلاعات شما با موفقیت ثبت شد.
-</div> :<div></div>}
-{iserror?<div className="alert alert-danger" role="alert">
-  {errmessage}
-</div>:<div></div>}
-
-
-       <div className="py-5 text-center">
+           <div className="py-5 text-center">
             <h3>پژوهش سرای دکتر حسابی مهاباد</h3>
         <h6 className="lead">فرم ثبت نام دانش آموزان</h6>
       </div>
@@ -664,7 +665,5 @@ class Errors {
   )
 }
 export default Home
-function toast(arg0: { title: string; description: any; status: string; duration: number; isClosable: boolean; }) {
-  throw new Error('Function not implemented.');
-}
+
 
