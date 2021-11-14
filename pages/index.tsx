@@ -226,8 +226,7 @@ class Errors {
         iserr=true
       }
 
-      console.log(grades.length)
-      console.log(listanjoman.length)
+    
 
       if ( grades.length>2) {
           if (listanjoman.length<=1 ) {
@@ -320,6 +319,7 @@ class Errors {
       anjomanstring+=item+","
     }
     var formdata =new FormData()
+    console.log(fvstring)
    
     // try 
     // {
@@ -364,28 +364,7 @@ class Errors {
 
 
      })
-    //  console.log(res)
-    //  if (res.status==200) {
-    //       console.log(res);
-    //       setissuccess(true)
-    //       setTimeout(() => {
-    //          setissuccess(false)
-    //       }, 5000);
-    //   } 
-    //   else {
-    //     console.log(res)
-    //   }
-    // }catch (err:any) 
-    // {
-    //   const { response } = err;
-    //   console.log(err)
-    //   console.log(response.data.errors)
-    //   seterrmessage(err.toString())
-    //     setiserror(true)
-    //     setTimeout(() => {
-    //       setiserror(false)
-    //    }, 5000);
-    // }
+ 
     
   
         
@@ -437,7 +416,7 @@ class Errors {
       setDefaultGrade("متوسطه اول")
     }else {
       setDefaultGrade("ریاضی")
-      setGrades([{"title":" ریاضی","value":3},{"title":" تجربی","value":4},
+      setGrades([{"title":"ریاضی","value":3},{"title":" تجربی","value":4},
       {"title":" علوم انسانی","value":5},{"title":" فنی و حرفه ای","value":6},
       {"title":" کارودانش","value":7}
     ]);
